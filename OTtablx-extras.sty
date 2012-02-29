@@ -4,14 +4,14 @@
 %% multiple-input tableaux.
 %%
 %% Changes with respect to OTtablx v0.3.1 are copyright (c) Pavel
-%% Iosad, 2011 
+%% Iosad, 2011
 %% This package is free software, distributed under the
 %% GNU General Public License v3. See COPYING file for details.
 %%
 %% List of changes:
 %%
-%% * Candidate and input cells use \textipa by default, but those who 
-%% do not use tipa (e. g. XeLaTeX users) can define a command \ipa{} 
+%% * Candidate and input cells use \textipa by default, but those who
+%% do not use tipa (e. g. XeLaTeX users) can define a command \ipa{}
 %% to customize the typesetting of these cells. The \ipa macro is
 %% \providecommand'ed at the beginning of the document: use
 %% \newcommand in the preamble or \renewcommand in the body (or use
@@ -47,9 +47,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% ORIGINAL PREAMBLE FOLLOWS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 
+%%
 %% This package was written by Nathan Sanders, copyright 2006.  Please
-%% send questions or comments to <nsanders@williams.edu>.  Package and 
+%% send questions or comments to <nsanders@williams.edu>.  Package and
 %% documentation (OTtablx-doc.pdf) are available for free download from
 %% <http://wso.williams.edu/~nsanders/OTtablx>.
 %%
@@ -259,12 +259,17 @@
     {\setcounter {OTx@candidate} {0}&\multicolumn{3}{@{}c}{\ipa{#1}}&
      \OTx@toprowbasic{#2}}
 
-%% New in OTtablx-extras: the top left corner in a multiple-inputs
-%% tables is just empty, but there is an extra column for the inputs
+   %% New in OTtablx-extras: extra column for the inputs; keeping the
+   %% top left corner available for input-selection tableaux
 
-\newcommand {\OTx@toprowmulti} [1]
-    {\setcounter {OTx@candidate} {0} &&&&&
-      \OTx@toprowbasic{#1}}
+\newcommand {\OTx@toprowmulti} [2][]
+    {\setcounter {OTx@candidate} {0} &&&&\ipa{#1}&
+      \OTx@toprowbasic{#2}}
+
+\newcommand {\OTx@toprowmultistar} [2][]
+    {\setcounter {OTx@candidate} {0}&\multicolumn{4}{@{}c}{\ipa{#1}}&
+     \OTx@toprowbasic{#2}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -275,11 +280,11 @@
 \newcommand{\OTx@candmarker}{}
 
 \newcommand {\OTx@candrow} [3][\OTx@candmarker]
-    {&\stepcounter{OTx@candidate}\theOTx@candidate &#1~ 
+    {&\stepcounter{OTx@candidate}\theOTx@candidate &#1~
      \OTx@candrowbasic{#2}{#3}}
 
 \newcommand {\OTx@candrowstar} [3][\OTx@candmarker]
-    {&#1~ &\stepcounter{OTx@candidate}\theOTx@candidate 
+    {&#1~ &\stepcounter{OTx@candidate}\theOTx@candidate
      \OTx@candrowbasic{#2}{#3}}
 
    %% New in OTtablx-extras: new commands for candidate rows including
@@ -317,7 +322,7 @@
          {\value{OTx@xx} < \value{OTx@constraints}}
          {\expandafter\OTx@amp\expandafter\OTx@amp\pnode{B\arabic{OTx@xx}}
           \stepcounter{OTx@xx} }&
-     &\pnode{R\arabic{OTx@candidate}}\\}            
+     &\pnode{R\arabic{OTx@candidate}}\\}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -336,7 +341,7 @@
          {\value{OTx@xx} < \value{OTx@constraints}}
          {\expandafter\OTx@amp\expandafter\OTx@amp\pnode{B\arabic{OTx@xx}}
           \stepcounter{OTx@xx} }&
-     &\pnode{R\arabic{OTx@candidate}}\\}            
+     &\pnode{R\arabic{OTx@candidate}}\\}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -395,7 +400,7 @@
 
 \newenvironment {OTmultitableau} [2][]                 % New in OTtablx-extras
     {\newcommand {\OTmtoprow}                      % define \OTmtoprow: new in OTtablx-extras
-      {\OTx@toprowmulti}
+      {\@ifstar {\OTx@toprowmultistar} {\OTx@toprowmulti}}%
      \newcommand {\OTmcandrow}                          % define \OTmcandrow(*): new in OTtablx-extras
          {\@ifstar {\OTx@candrowinputstar} {\OTx@candrowinput}}% %
      \SpecialCoor                                      % allow nodes as coordinates
